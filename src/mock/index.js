@@ -21,5 +21,8 @@ Mock.mock(/\/article_table\/p/, 'get', article_tableAPI.getPv);
 // // 搜索相关
 Mock.mock(/\/search\/user/, 'get', remoteSearchAPI.searchUser);
 
+//我的设备
+Mock.mock(/\/GetIndexConfig.json/, 'post', loginAPI.loginByEmail);
+Mock.mock(/\/queryalldevice.json/, 'post', loginAPI.queryAllDevice);
 
 export default Mock;

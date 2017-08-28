@@ -40,3 +40,11 @@ export function loginByEmail(uname, password) {
   });
 }
 
+export function queryAllDevice(token){
+  return fetch({
+    url: '/queryalldevice.json',
+    method: 'post',
+    params: { token }
+  });
+}
+

@@ -1,4 +1,4 @@
-import { loginByEmail, logout, getInfo } from 'api/login';
+import { loginByEmail, logout, getInfo, queryAllDevice } from 'api/login';
 import { getToken, setToken, removeToken } from 'utils/auth';
 
 const user = {
@@ -126,6 +126,17 @@ const user = {
         setToken(role);
         resolve();
       })
+    },
+
+    //查询设备信息
+    QueryAllDevice({ commit, state }) {
+      return new Promise((resolve, reject) => {
+         queryAllDevice(state.token).then(response => {
+            resolve(response);
+          }).catch(error => {
+            reject(error);
+          });
+      });
     }
   }
 };

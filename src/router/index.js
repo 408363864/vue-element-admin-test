@@ -84,7 +84,7 @@ export const asyncRouterMap = [
     icon: 'tubiaoleixingzhengchang',
     children: [
       { path: 'index', component: _import('device/index'), name: '我的设备' },
-      { path: 'index', component: _import('device/index'), name: '新增设备' }
+      { path: 'create', component: _import('device/create'), name: '新增设备' }
     ]
   },
   {

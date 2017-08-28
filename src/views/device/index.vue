@@ -1,97 +1,76 @@
 <template>
-  <div class="components-container" >
-	<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-	  <el-form-item label="应用名字" prop="name">
-	    <el-input v-model="ruleForm.name"></el-input>
-	  </el-form-item>
-	  <el-form-item label="应用分类" prop="applytype">
-	    <el-select v-model="ruleForm.applytype" placeholder="请选择应用分类">
-	      <el-option label="智能设备" value="1"></el-option>
-	    </el-select>
-	  </el-form-item>
-	  <el-form-item label="技术方案" prop="tec">
-	    <el-radio-group v-model="ruleForm.tec">
-	      <el-radio label="wifi"></el-radio>
-	      <el-radio label="蓝牙"></el-radio>
-	    </el-radio-group>
-	  </el-form-item>
-	  <el-form-item label="应用说明" prop="explain">
-	    <el-input type="textarea" v-model="ruleForm.explain"></el-input>
-	  </el-form-item>
-	  <el-form-item>
-	    <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-	    <el-button @click="resetForm('ruleForm')">重置</el-button>
-	  </el-form-item>
-	</el-form>
+  <div style="min-width: 1000px;">
+    <div style="width: 160px; float: left;">
+      <el-table
+    :data="alldevice"
+    height="800"
+    border
+    style="width: 160px">
+      <el-table-column
+        prop="name"
+        label="我的设备"
+        width="160">
+      </el-table-column>
+    </el-table>
+    </div>
+    <div id="map-container" style="height: 800px; float: left;min-width: 840px;">
+    
+    </div>
   </div>
+  
 </template>
 <script>
- // 	applytype: 0,//应用类别
- //    name:"",//应用名字
- //    creatdate:"",//创建时间
- //    explain:"",//应用说明
- //    tec: 1,//技术方案（1-wifi，2-蓝牙），
- //    type: 1(1-新增,2-编辑) 
   export default {
     name: 'create',
     data() {
-      const validateEmail = (rule, value, callback) => {
-          callback();
-      };
-      const validatePass = (rule, value, callback) => {
-        if (value.length < 6) {
-          callback(new Error('密码不能小于6位'));
-        } else {
-          callback();
-        }
-      };
       return {
-        ruleForm: {
-          name: '',
-          applytype: '智能设备',
-          tec: 'wifi',
-          explain: ''
-        },
-        rules: {
-          name: [
-            { required: true, message: '应用名字', trigger: 'blur' }
-          ]
-      	},
-        loading: false,
-        showDialog: false
+        alldevice: []
       }
     },
+    created(){
+      this.queryDevice();
+    },
     methods: {
-      // handleLogin() {
-      //   this.$refs.ruleForm.validate(valid => {
-      //     if (valid) {
-      //       this.loading = true;
-      //       this.$store.dispatch('LoginByEmail', this.loginForm).then(() => {
-      //         this.loading = false;
-      //         this.$router.push({ path: '/' });
-      //           // this.showDialog = true;
-      //       }).catch(() => {
-      //         this.loading = false;
-      //       });
-      //     } else {
-      //       console.log('error submit!!');
-      //       return false;
-      //     }
-      //   });
-      // },
-      submitForm(formName) {
-      	console.log(this)
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
+      queryDevice() {
+        this.$store.dispatch('QueryAllDevice').then(({data}) => {
+          this.$data.alldevice = data.list;
+          this.loading = false;
+          // this.$router.push({ path: '/' });
+            // this.showDialog = true;
+          this.createMap();
+        }).catch(() => {
+          this.loading = false;
         });
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+      createMap() {
+        var map = new BMap.Map("map-container"); 
+        map.centerAndZoom(new BMap.Point(this.$data.alldevice[0].lng,this.$data.alldevice[0].lat), 6);
+        map.enableScrollWheelZoom(true);
+        var opts = {
+              width : 250,     // 信息窗口宽度
+              height: 80,     // 信息窗口高度
+              title : "信息窗口" , // 信息窗口标题
+              enableMessage:true//设置允许信息窗发送短息
+              };
+        for(var i=0;i<this.$data.alldevice.length;i++){
+          var json = this.$data.alldevice[i];
+          var marker = new BMap.Marker(new BMap.Point(json.lng,json.lat));  // 创建标注
+          var content = `创建者:${json.creator}<br/>创建时间:${json.creatdate}`;
+          var title = json.title;
+          map.addOverlay(marker);               // 将标注添加到地图中
+          addClickHandler(content,title,marker);
+        }
+        function addClickHandler(content,title,marker){
+          marker.addEventListener("click",function(e){
+            openInfo(content,title,e)}
+          );
+        }
+        function openInfo(content, title,e){
+          var p = e.target;
+          var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+          var infoWindow = new BMap.InfoWindow(content,Object.assign(opts,{title}));  // 创建信息窗口对象 
+          map.openInfoWindow(infoWindow,point); //开启信息窗口
+        }
       }
     }
   }
