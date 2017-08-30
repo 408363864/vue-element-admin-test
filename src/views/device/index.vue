@@ -1,19 +1,21 @@
 <template>
-  <div style="min-width: 1000px;">
-    <div style="width: 160px; float: left;">
+  <div class="h100 flex">
+    <div class="h100" style="width: 162px;max-width: 162px;" flex="1">
       <el-table
     :data="alldevice"
-    height="800"
+    height=""
     border
-    style="width: 160px">
+    class="h100"
+    style="width: 100%">
       <el-table-column
         prop="name"
         label="我的设备"
-        width="160">
+        width="160"
+        class="h100">
       </el-table-column>
     </el-table>
     </div>
-    <div id="map-container" style="height: 800px; float: left;min-width: 840px;">
+    <div class="h100" flex="9" id="map-container">
     
     </div>
   </div>
@@ -75,3 +77,17 @@
     }
   }
 </script>
+
+<style lang="scss">
+  .main-container,
+  .app-main,
+  .h100{
+    height: 100%;
+  }
+  .app-main{
+    box-sizing: border-box;
+    position: relative;
+    top: -50px;
+    padding-top: 50px;
+  }
+</style>
