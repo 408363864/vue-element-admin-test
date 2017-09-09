@@ -33,6 +33,13 @@
    });
    return time_str;
  }
+ 
+export function addTimeSpan(day,time){
+  var date = new Date();
+  day && date.setDate(date.getDate() + day);
+  time && date.setMinutes(date.getMinutes() + time);
+  return date;
+} 
 
  export function formatTime(time, option) {
    time = +time * 1000;

@@ -23,10 +23,10 @@ export const constantRouterMap = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/device',
     name: '首页',
     hidden: true,
-    children: [{ path: 'dashboard', component: _import('dashboard/index') }]
+    children: [{ path: 'device', component: _import('device/index') }]
   },
   // {
   //   path: '/introduction',
@@ -84,7 +84,8 @@ export const asyncRouterMap = [
     icon: 'tubiaoleixingzhengchang',
     children: [
       { path: 'index', component: _import('device/index'), name: '我的设备' },
-      { path: 'create', component: _import('device/create'), name: '新增设备' }
+      { path: 'create', component: _import('device/addDevice'), name: '新增设备' },
+      // { path: 'edit', component: _import('device/edit'), name: '设备管理' }
     ]
   },
   {
@@ -92,52 +93,52 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/charts/index',
     name: '图表',
-    icon: 'tubiaoleixingzhengchang',
+    icon: 'zonghe',
     children: [
-      { path: 'index', component: _import('charts/index'), name: '介绍' },
-      { path: 'keyboard', component: _import('charts/keyboard'), name: '键盘图表' },
-      { path: 'keyboard2', component: _import('charts/keyboard2'), name: '键盘图表2' },
+      // { path: 'index', component: _import('charts/index'), name: '介绍' },
+      // { path: 'keyboard', component: _import('charts/keyboard'), name: '键盘图表' },
+      // { path: 'keyboard2', component: _import('charts/keyboard2'), name: '键盘图表2' },
       { path: 'line', component: _import('charts/line'), name: '折线图' },
       { path: 'mixchart', component: _import('charts/mixChart'), name: '混合图表' }
     ]
   },
-  {
-    path: '/example',
-    component: Layout,
-    redirect: 'noredirect',
-    name: '综合实例',
-    icon: 'zonghe',
-    children: [
-      {
-        path: '/example/table',
-        component: _import('example/table/index'),
-        redirect: '/example/table/table',
-        name: 'Table',
-        icon: 'table',
-        children: [
-          { path: 'dynamictable', component: _import('example/table/dynamictable'), name: '动态table' },
-          { path: 'dragtable', component: _import('example/table/dragTable'), name: '拖拽table' },
-          { path: 'inline_edit_table', component: _import('example/table/inlineEditTable'), name: 'table内编辑' },
-          { path: 'table', component: _import('example/table/table'), name: '综合table' }
-        ]
-      },
-      { path: 'form/edit', icon: 'ziliaoshouce', component: _import('example/form'), name: '编辑Form', meta: { isEdit: true } },
-      { path: 'form/create', icon: 'yinhangqia', component: _import('example/form'), name: '创建Form' },
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: 'noredirect',
+  //   name: '综合实例',
+  //   icon: 'zonghe',
+  //   children: [
+  //     {
+  //       path: '/example/table',
+  //       component: _import('example/table/index'),
+  //       redirect: '/example/table/table',
+  //       name: 'Table',
+  //       icon: 'table',
+  //       children: [
+  //         { path: 'dynamictable', component: _import('example/table/dynamictable'), name: '动态table' },
+  //         { path: 'dragtable', component: _import('example/table/dragTable'), name: '拖拽table' },
+  //         { path: 'inline_edit_table', component: _import('example/table/inlineEditTable'), name: 'table内编辑' },
+  //         { path: 'table', component: _import('example/table/table'), name: '综合table' }
+  //       ]
+  //     },
+  //     { path: 'form/edit', icon: 'ziliaoshouce', component: _import('example/form'), name: '编辑Form', meta: { isEdit: true } },
+  //     { path: 'form/create', icon: 'yinhangqia', component: _import('example/form'), name: '创建Form' },
 
-      { path: 'tab/index', icon: 'mobankuangjia', component: _import('example/tab/index'), name: 'Tab' }
-    ]
-  },
-  {
-    path: '/errorpage',
-    component: Layout,
-    redirect: 'noredirect',
-    name: '错误页面',
-    icon: '404',
-    children: [
-      { path: '401', component: _import('error/401'), name: '401' },
-      { path: '404', component: _import('error/404'), name: '404' }
-    ]
-  },
+  //     { path: 'tab/index', icon: 'mobankuangjia', component: _import('example/tab/index'), name: 'Tab' }
+  //   ]
+  // },
+  // {
+  //   path: '/errorpage',
+  //   component: Layout,
+  //   redirect: 'noredirect',
+  //   name: '错误页面',
+  //   icon: '404',
+  //   children: [
+  //     { path: '401', component: _import('error/401'), name: '401' },
+  //     { path: '404', component: _import('error/404'), name: '404' }
+  //   ]
+  // },
   // {
   //   path: '/errlog',
   //   component: Layout,

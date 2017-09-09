@@ -1,23 +1,32 @@
 <template>
-  <div class="h100 flex">
-    <div class="h100" style="width: 162px; max-width: 162px;" flex="1">
-      <p class="device-all" @click="createMap">我的设备</p>
+  <div class="h100">
+    <div class="h100 flex" v-if="show">
+      <div class="h100" style="width: 162px; max-width: 162px; overflow-y:auto;" flex="1">
+      <p class="device-all" @click="initIdx">我的设备</p>
       <ul class="device-ul">
         <li v-for="(item, index) in alldevice" v-bind:class="{selected: (index + 1 == idx)}" @click="querySingleDevice(item.id, index)">{{item.name}}</li>
       </ul>
     </div>
-    <div class="h100" flex="9" id="map-container">
+    <div v-show="idx == 0" class="h100 bgb" flex="9" id="map-container">
     
+    </div>
+    <Single class="h100 bgb" flex="9" v-show="idx != 0" ref="deviceinfo"></Single>
+    </div>
+    <div v-else>
+      <div style="margin: 60px auto;text-align: center;">暂无可用设备</div>
     </div>
   </div>
   
 </template>
 <script>
+  import Single from './single';
   export default {
     name: 'create',
+    components: {Single},
     data() {
       return {
         alldevice: [],
+        show: true,
         idx: 0
       }
     },
@@ -26,20 +35,23 @@
     },
     methods: {
       queryDevice() {
-        this.$store.dispatch('QueryAllDevice').then(({data}) => {
-          console.log(data.list)
+        this.$store.dispatch('QueryAllDevice').then(({data = {}}) => {
           this.$data.alldevice = data.list;
-          this.loading = false;
+          if((data.list||[]).length < 1){
+            this.$data.show = false;
+          }
           // this.$router.push({ path: '/' });
             // this.showDialog = true;
           this.createMap();
         }).catch(() => {
-          this.loading = false;
         });
+      },
+      initIdx(){
+        this.$data.idx = 0;
       },
       createMap() {
         var map = new BMap.Map("map-container"); 
-        map.centerAndZoom(new BMap.Point(this.$data.alldevice[0].lng,this.$data.alldevice[0].lat), 6);
+        map.centerAndZoom(new BMap.Point(this.$data.alldevice[0].lng,this.$data.alldevice[0].lat), 5);
         map.enableScrollWheelZoom(true);
         let opts = {
               width : 250,     // 信息窗口宽度
@@ -47,7 +59,7 @@
               title : "信息窗口" , // 信息窗口标题
               enableMessage:true//设置允许信息窗发送短息
               };
-        let pointArr = [];
+        // let pointArr = [];
         for(var i=0;i<this.$data.alldevice.length;i++){
           var json = this.$data.alldevice[i];
           var point = new BMap.Point(json.lng,json.lat);
@@ -56,7 +68,7 @@
           var title = json.title;
           map.addOverlay(marker);               // 将标注添加到地图中
           addClickHandler(content,title,marker);
-          pointArr.push(point);
+          // pointArr.push(point);
         }
         map.setViewport(pointArr);
         function addClickHandler(content,title,marker){
@@ -73,7 +85,9 @@
       },
       querySingleDevice(id, idx){
         this.$data.idx = idx +1;
-        console.log(this.$data.idx)
+        this.$refs.deviceinfo.queryDeviceInfo(id);
+        this.$refs.deviceinfo.queryApplyInfo(id);
+        this.$refs.deviceinfo.querychatline(id);
       }
     }
   }
@@ -101,6 +115,7 @@
     line-height:40px;
     text-align:center;
     border-bottom: 1px solid #dfe6ec;
+    border-right: 1px solid #dfe6ec;
     margin: 0;
     padding: 0;
     color: #1f2d3d;
@@ -117,6 +132,9 @@
     font-size: 14px;
   }
   .device-ul li.selected{
-    background:#e2f0e4;
+    background: #337ab7;
+    color: #fff;
+  }
+  .bgb{
   }
 </style>

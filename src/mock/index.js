@@ -24,5 +24,9 @@ Mock.mock(/\/search\/user/, 'get', remoteSearchAPI.searchUser);
 //我的设备
 Mock.mock(/\/GetIndexConfig.json/, 'post', loginAPI.loginByEmail);
 Mock.mock(/\/queryalldevice.json/, 'post', loginAPI.queryAllDevice);
+Mock.mock(/\/querydeviceinfo.json/, 'post', loginAPI.queryDeviceInfo);
+Mock.mock(/\/queryapplyinfo.json/, 'post', loginAPI.queryapplyinfo);
+Mock.mock(/\/querydevicedata.json/, 'post', loginAPI.querydevicedata);
+
 
 export default Mock;

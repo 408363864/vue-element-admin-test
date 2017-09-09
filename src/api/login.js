@@ -48,3 +48,37 @@ export function queryAllDevice(token){
   });
 }
 
+export function queryDeviceInfo(id) {
+  const data = {
+    id
+  };
+  return fetch({
+    url: '/querydeviceinfo.json',
+    method: 'post',
+    data
+  });
+}
+
+export function queryapplyinfo(id) {
+  const data = {
+    id
+  };
+  return fetch({
+    url: '/queryapplyinfo.json',
+    method: 'post',
+    data
+  });
+}
+
+export function querydevicedata(id,startdate,enddate) {
+  const data = {
+    id,
+    startdate,
+    enddate
+  };
+  return fetch({
+    url: '/querydevicedata.json',
+    method: 'post',
+    data
+  });
+}

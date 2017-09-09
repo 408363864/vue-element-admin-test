@@ -1,4 +1,4 @@
-import { loginByEmail, logout, getInfo, queryAllDevice } from 'api/login';
+import { loginByEmail, logout, getInfo, queryAllDevice, queryDeviceInfo, queryapplyinfo,querydevicedata } from 'api/login';
 import { getToken, setToken, removeToken } from 'utils/auth';
 
 const user = {
@@ -128,7 +128,7 @@ const user = {
       })
     },
 
-    //查询设备信息
+    //查询全部设备
     QueryAllDevice({ commit, state }) {
       return new Promise((resolve, reject) => {
          queryAllDevice(state.token).then(response => {
@@ -137,7 +137,38 @@ const user = {
             reject(error);
           });
       });
-    }
+    },
+
+    //查询设备信息
+    QueryDeviceInfo({ commit, state }, id) {
+      return new Promise((resolve, reject) => {
+         queryDeviceInfo(id).then(response => {
+            resolve(response);
+          }).catch(error => {
+            reject(error);
+          });
+      });
+    },
+
+    queryapplyinfo({ commit, state }, id) {
+      return new Promise((resolve, reject) => {
+         queryapplyinfo(id).then(response => {
+            resolve(response);
+          }).catch(error => {
+            reject(error);
+          });
+      });
+    },
+
+    querydevicedata({ commit, state }, id,startdate,enddate) {
+      return new Promise((resolve, reject) => {
+         querydevicedata(id,startdate,enddate).then(response => {
+            resolve(response);
+          }).catch(error => {
+            reject(error);
+          });
+      });
+    },
   }
 };
 
